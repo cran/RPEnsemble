@@ -1,0 +1,18 @@
+Package: RPEnsemble
+Type: Package
+Title: Random Projection Ensemble Classification
+Version: 0.1
+Date: 2015-05-05
+Author: Timothy I. Cannings and Richard J. Samworth
+Maintainer: Timothy I. Cannings <t.cannings@statslab.cam.ac.uk>
+Description: Implements the methodology of "Cannings, T. I. and Samworth, R. J. (2015) Random projection ensemble classification. http://arxiv.org/abs/1504.04595". The random projection ensemble classifier is a very general method for classification of high-dimensional data, based on careful combination of the results of applying an arbitrary base classifier to random projections of the feature vectors into a lower-dimensional space. The random projections are divided into non-overlapping blocks, and within each block the projection yielding the smallest estimate of the test error is selected. The random projection ensemble classifier then aggregates the results of applying the base classifier on the selected projections, with a data-driven voting threshold to determine the final assignment. 
+Depends: R (>= 3.0.0), MASS
+Imports: class, parallel, stats
+License: GPL-3
+LazyLoad: Yes
+URL: http://arxiv.org/abs/1504.04595,
+        http://www.statslab.cam.ac.uk/~tc325/
+NeedsCompilation: no
+Packaged: 2015-05-05 08:35:40 UTC; tc325
+Repository: CRAN
+Date/Publication: 2015-05-05 17:32:05
