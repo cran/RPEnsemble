@@ -21,7 +21,7 @@ cores = 2, splitsample = FALSE,  ...)
   \item{projmethod}{Either \code{"Haar"} or \code{"axis"}}
   \item{estmethod}{Method for estimating the test errors to choose the
     projection: either resubstitution \code{"resub"} or leave-one-out \code{"loo"}}
-  \item{cores}{The number of computer cores to use}
+  \item{cores}{The number of computer cores to use (note: \code{cores > 1} not supported on Windows)}
   \item{splitsample}{If \code{TRUE} will use the validation set \code{(XVal, YVal)} to estimate the test error in \code{\link{RPChooseSS}}. If \code{FALSE} will use \code{estmethed} to estimate the test error in \code{\link{RPChoose}}}
   \item{\dots}{Optional further arguments if \code{base = "other"}}
 }
@@ -37,6 +37,6 @@ Train <- RPModel(1, 50, 20, 0.5)
 Test <- RPModel(1, 100, 20, 0.5)
 Out <- RPParallel(XTrain = Train$x, YTrain = Train$y, XTest = Test$x, 
 d = 2, B1 = 100, B2 = 10, base = "LDA", projmethod = "Haar", 
-estmethod = "resub", cores = 2)
+estmethod = "resub", cores = 1)
 colMeans(Out)
 }

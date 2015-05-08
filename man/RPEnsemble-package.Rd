@@ -27,7 +27,7 @@ Test <- RPModel(1, 100, 50, 0.5)
 #classifier and the leave-one-out test error estimate
 Out <- RPParallel(XTrain = Train$x, YTrain = Train$y, XTest = Test$x, d = 2, 
 B1 = 10, B2 = 10, base = "knn", projmethod = "Haar", estmethod = "loo",  
-splitsample = FALSE, k = seq(1, 25, by = 2), cores = 2)
+splitsample = FALSE, k = seq(1, 25, by = 2), cores = 1)
 
 #estimate the class 1 prior probability
 phat <- sum(Train$y == 1)/50
@@ -50,7 +50,7 @@ s <- sample(1:50,25)
 OutSS <- RPParallel(XTrain = Train$x[-s,], YTrain = Train$y[-s], 
 XVal = Train$x[s,], YVal = Train$y[s],  XTest = Test$x, d = 2, 
 B1 = 10, B2 = 10, base = "knn", projmethod = "Haar", 
-k = seq(1,13, by = 2), cores = 2, splitsample = TRUE)
+k = seq(1,13, by = 2), cores = 1, splitsample = TRUE)
 alphahatSS <- RPalpha(RP.out = OutSS, Y = Train$y[s], p1 = phat)
 ClassSS <- RPEnsembleClass(RP.out = OutSS, n.val = 25, n.test = 100, 
 p1 = phat, splitsample = TRUE, alpha = alphahatSS)
