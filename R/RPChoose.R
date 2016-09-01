@@ -3,80 +3,76 @@ RPChoose <-
            , YTrain #n vector of the classes of the trining samples
            , XTest  #n.test by p test data matrix
            , d      #dimension to project into
-           , B2 = 100 #block size
+           , B2 = 10 #block size
            , base = "LDA" # base classifier, eg "knn","LDA","QDA" or other
            , k = c(3,5) # possible k if base = "knn"
            , projmethod = "Haar" # projection distribution eg "Haar", "axis"
-           , estmethod = "resub"
+           , estmethod = "training"
          ,   ... )
         {
-    n <- length(YTrain)
-    p <- ncol(XTrain)
-    w <- n
-    if (base == "LDA") {
-        for (j in 1:B2) {
-            RP <- RPGenerate(p, d, projmethod)
-            if(estmethod == "resub"){
-                weight.test <- mean(predict(lda(x = XTrain%*%RP, grouping = YTrain), XTrain%*%RP)$class != YTrain, na.rm = TRUE)
-            }
-            if(estmethod == "loo"){
-                weight.test <- mean(lda(x = XTrain%*%RP, grouping = YTrain, CV = TRUE)$class != YTrain, na.rm = TRUE)
-            }
-            if (weight.test <= w) {
-                w <- weight.test
-                RP1 <- RP
-            }
+      #psnice(value = 19)
+      n <- length(YTrain)
+      ntest <- nrow(XTest)
+      p <- ncol(XTrain)
+      k1 <- 1
+      RP <-  RPGenerate(p, d, method = projmethod, B2)
+      XRP <- crossprod(t(XTrain), RP)
+      if (base == "knn")
+      {
+        if(estmethod == "training") stop("training error estimate unsuitable for knn classifier") 
+        if (estmethod == "loo"){
+        weight.test <- sapply(1:B2, function(j){min(sapply(k,function(x){mean(knn.cv(XRP[, d*(j-1) + 1:d ], YTrain, x) != YTrain, na.rm = TRUE)}))})
         }
-        if(estmethod == "resub"){Train.Class <- as.numeric(predict(lda(x = XTrain%*%RP1, grouping = YTrain), XTrain%*%RP1)$class)}
-        if(estmethod == "loo"){Train.Class <- as.numeric(lda(x = XTrain%*%RP1, grouping = YTrain, CV = TRUE)$class)}
-        Test.Class <- as.numeric(predict(lda(x = XTrain%*%RP1, grouping = YTrain), XTest%*%RP1)$class)
-    }
-    if (base == "QDA") {
-        for (j in 1:B2) {
-            RP <- RPGenerate(p, d, projmethod)
-            if(estmethod == "resub"){
-                weight.test <- mean(predict(qda(x = XTrain%*%RP, grouping = YTrain), XTrain%*%RP)$class != YTrain, na.rm = TRUE)
-            }
-            if(estmethod == "loo"){
-                weight.test <- mean(qda(x = XTrain%*%RP, grouping = YTrain,CV = TRUE)$class != YTrain, na.rm = TRUE)
-            }
-            if (weight.test <= w) {
-                w <- weight.test
-                RP1 <- RP
-            }
+        cols1 <- d*(which.min(weight.test) - 1) + 1:d
+        kcv.voteRP <- sapply(k,function(x){mean(knn.cv(XRP[, cols1], YTrain, x) != YTrain, na.rm = TRUE)})
+        k1 <- k[which.min(kcv.voteRP)]
+        Train.Class <- as.numeric(knn.cv(XRP[,cols1], YTrain, k1))
+        XRPTest <- crossprod(t(XTest),RP[,cols1])
+        Test.Class <- as.numeric(knn(XRP[,cols1], XRPTest, YTrain, k1))
+      }
+      
+      if (base == "LDA") 
+      {
+        if(estmethod == "training") {
+        weight.test <- sapply(1:B2, function(j){mean(predict(lda(x =  XRP[,d*(j-1) + 1:d], grouping = YTrain),  XRP[1:n, d*(j-1) + 1:d])$class != YTrain, na.rm = TRUE)})
+        cols1 <- d*(which.min(weight.test) - 1) + 1:d
+        Train.Class <- as.numeric(predict(lda(x = XRP[, cols1], grouping = YTrain), XRP[1:n, cols1])$class)
+        XRPTest <- crossprod(t(XTest),RP[,cols1])
+        Test.Class <- as.numeric(predict(lda(x = XRP[1:n, cols1], grouping = YTrain), XRPTest)$class)
         }
-        if(estmethod == "resub"){Train.Class <- as.numeric(predict(qda(x = XTrain%*%RP1, grouping = YTrain), XTrain%*% RP1)$class)}
-        if(estmethod == "loo"){Train.Class <- as.numeric(qda(x = XTrain%*%RP1, grouping = YTrain, CV = TRUE)$class)}
-        Test.Class <- as.numeric(predict(qda(x = XTrain%*%RP1,  grouping = YTrain), XTest%*%RP1)$class)
-    }
-    if (base == "knn"){
-        if(estmethod == "resub") stop("resubstitution estimate unsuitable for knn classifier") 
-        if(estmethod == "loo"){
-            for (j in 1:B2) {
-                RP <- RPGenerate(p, d, projmethod)
-                kcv.voteRP <- sapply(k, function(x) {mean(knn.cv(XTrain%*%RP, YTrain, x) != YTrain, na.rm = TRUE)})
-                weight.test <- min(kcv.voteRP)
-                if (weight.test <= w) {
-                    w <- weight.test
-                    RP1 <- RP
-                    k1 <- order(kcv.voteRP)[1]
-                }
-            }
-            Train.Class <- as.numeric(knn.cv(XTrain%*%RP1, YTrain, k1))
-            Test.Class <- as.numeric(knn(XTrain%*%RP1, XTest%*%RP1, YTrain, k1))
+        if (estmethod == "loo") {
+        weight.test <- sapply(1:B2, function(j){mean(lda(x = XRP[1:n, d*(j-1) + 1:d], grouping = YTrain, CV = TRUE)$class != YTrain, na.rm = TRUE)})
+        cols1 <-  d*(which.min(weight.test) - 1) + 1:d
+        Train.Class <- as.numeric(lda(x = XRP[, cols1], grouping = YTrain, CV = TRUE)$class)
+        XRPTest <- crossprod(t(XTest),RP[,cols1])
+        Test.Class <- as.numeric(predict(lda(x = XRP[1:n, cols1], grouping = YTrain), XRPTest)$class)
         }
-    }
-    if (base == "Other") {
-        for (j in 1:B2) {
-            RP <- RPGenerate(p, d, projmethod)
-            weight.test <- mean(Other.classifier(x = XTrain%*%RP, grouping = YTrain, CV = TRUE)$class != YTrain, na.rm = TRUE)
-            if (weight.test <= w) {
-                w <- weight.test
-                RP1 <- RP
-            }
+      }
+      if (base == "QDA") 
+      {      
+        if(estmethod == "training") {
+        weight.test <- sapply(1:B2, function(j){mean(predict(qda(x =  XRP[, d*(j-1) + 1:d], grouping = YTrain),  XRP[,d*(j-1) + 1:d])$class != YTrain, na.rm = TRUE)})
+        cols1 <-  d*(which.min(weight.test) - 1) + 1:d
+        Train.Class <- as.numeric(predict(qda(x = XRP[, cols1], grouping = YTrain), XRP[, cols1])$class)
+        XRPTest <- crossprod(t(XTest),RP[,cols1])
+        Test.Class <- as.numeric(predict(qda(x = XRP[, cols1], grouping = YTrain), XRPTest)$class)
         }
-        Train.Class <- as.numeric(Other.classifier(x = XTrain%*%RP1, grouping = YTrain, CV = TRUE)$class)
-        Test.Class <- as.numeric(Other.classifier(x = XTrain%*%RP1, grouping = YTrain, XTest%*%RP1)$class)
+        if (estmethod == "loo"){      
+        weight.test <- sapply(1:B2, function(j){mean(qda(x = XRP[, d*(j-1) + 1:d], grouping = YTrain, CV = TRUE)$class != YTrain, na.rm = TRUE)})
+        cols1 <-  d*(which.min(weight.test) - 1) + 1:d
+        Train.Class <- as.numeric(qda(x = XRP[, cols1], grouping = YTrain, CV = TRUE)$class)
+        XRPTest <- crossprod(t(XTest),RP[,cols1])
+        Test.Class <- as.numeric(predict(qda(x = XRP[, cols1], grouping = YTrain), XRPTest)$class)
+        }
+      }
+      if (base == "Other") 
+      {
+        weight.test <- sapply(1:B2, function(j){mean(Other.classifier(x = XRP[, d*(j-1) + 1:d], grouping = YTrain, CV = TRUE)$class != YTrain, na.rm = TRUE)})
+        cols1 <- d*(which.min(weight.test) - 1) + 1:d
+        Train.Class <- as.numeric(Other.classifier(x = XRP[, cols1], grouping = YTrain, CV = TRUE)$class)
+        XRPTest <- crossprod(t(XTest),RP[,cols1])
+        Test.Class <- as.numeric(Other.classifier(x = XRP[, cols1], grouping = YTrain,  XRPTest)$class)
+      }
+      return(c(Train.Class, Test.Class)) 
     }
-    return(c(Train.Class, Test.Class)) 
-}
+   

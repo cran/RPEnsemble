@@ -20,11 +20,10 @@ leave-one-out, resubstitution or sample-split estimates of the class labels.}
 
 \seealso{\code{\link{RPParallel}}}
 \examples{
-Train <- RPModel(1, 50, 20, 0.5)
-Test <- RPModel(1, 100, 20, 0.5)
-Out <- RPParallel(XTrain = Train$x, YTrain = Train$y, XTest = Test$x, 
-d = 2, B1 = 100, B2 = 10, base = "LDA", projmethod = "Haar", 
-estmethod = "resub", cores = 1)
+Train <- RPModel(1, 50, 100, 0.5)
+Test <- RPModel(1, 100, 100, 0.5)
+Out <- RPParallel(XTrain = Train$x, YTrain = Train$y, XTest = Test$x, d = 2, B1 = 10, 
+B2 = 10, base = "LDA", projmethod = "Haar", estmethod = "training", cores = 1)
 alpha <- RPalpha(RP.out = Out, Y = Train$y, p1 = sum(Train$y == 1)/length(Train$y))
 alpha
 

@@ -1,7 +1,7 @@
 RPalpha <-
-function(RP.out # the result of a call to RPParellelEnsembleOut
-        ,Y # Traning set classes if samplesplit = FALSE, Validation set classes if samplesplit = TRUE
-        ,p1 # prior prob estimate
+function(RP.out # the result of a call to RPParellel
+        ,Y # Training set classes if samplesplit = FALSE, Validation set classes if samplesplit = TRUE
+        ,p1 # prior probability estimate
          )
    {
     n <- length(Y)

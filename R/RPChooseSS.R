@@ -15,55 +15,42 @@ RPChooseSS <-
     p <- ncol(XTrain)
     n.val <- length(YVal)
     w <- n.val
-    if (base == "LDA") {
-        for (j in 1:B2) {
-            RP <- RPGenerate(p, d, projmethod)
-            weight.test <- mean(predict(lda(x = XTrain%*%RP, grouping = YTrain), XVal%*%RP)$class != YVal, na.rm = TRUE)
-            if (weight.test <= w) {
-                w <- weight.test
-                RP1 <- RP
-            }
-        }
-        Val.Class <- as.numeric(predict(lda(x = XTrain%*%RP1, grouping = YTrain), XVal%*%RP1)$class)
-        Test.Class <- as.numeric(predict(lda(x = XTrain%*%RP1, grouping = YTrain), XTest%*%RP1)$class)
+    RP <-  RPGenerate(p, d, method = projmethod, B2)
+    XRP <- crossprod(t(XTrain), RP)
+    XRPVal <- crossprod(t(XVal), RP)
+    if (base == "knn")
+    {
+      weight.test <- sapply(1:B2, function(j){min(sapply(k,function(x){mean(knn(XRP[, d*(j-1) + 1:d ], XRPVal[, d*(j-1) + 1:d ], YTrain, x) != YVal, na.rm = TRUE)}))})
+      cols1 <- d*(which.min(weight.test) - 1) + 1:d
+      kcv.voteRP <- sapply(k,function(x){mean(knn(XRP[, cols1], XRPVal[, cols1], YTrain, x) != YVal, na.rm = TRUE)})
+      k1 <- k[which.min(kcv.voteRP)]
+      Val.Class <- as.numeric(knn(XRP[,cols1], XRPVal[,cols1], YTrain, k1))
+      XRPTest <- crossprod(t(XTest),RP[,cols1])
+      Test.Class <- as.numeric(knn(XRP[,cols1], XRPTest, YTrain, k1))
     }
-    if (base == "QDA") {
-        for (j in 1:B2) {
-            RP <- RPGenerate(p, d, projmethod)
-            weight.test <- mean(predict(qda(x = XTrain%*%RP, grouping = YTrain), XVal%*%RP)$class != YVal, na.rm = TRUE)
-            if (weight.test <= w) {
-                w <- weight.test
-                RP1 <- RP
-            }
-        }
-        Val.Class <- as.numeric(predict(qda(x = XTrain%*%RP1, grouping = YTrain), XVal%*%RP1)$class)
-        Test.Class <- as.numeric(predict(qda(x = XTrain%*%RP1,  grouping = YTrain), XTest%*%RP1)$class)
+    
+    if (base == "LDA") 
+    {
+      weight.test <- sapply(1:B2, function(j){mean(predict(lda(x =  XRP[,d*(j-1) + 1:d], grouping = YTrain),  XRPVal[, d*(j-1) + 1:d])$class != YVal, na.rm = TRUE)})
+      cols1 <- d*(which.min(weight.test) - 1) + 1:d
+      Val.Class <- as.numeric(predict(lda(x = XRP[, cols1], grouping = YTrain), XRPVal[, cols1])$class)
+      XRPTest <- crossprod(t(XTest),RP[,cols1])
+      Test.Class <- as.numeric(predict(lda(x = XRP[, cols1], grouping = YTrain), XRPTest)$class)
     }
-    if (base == "knn"){
-        for (j in 1:B2) {
-            RP <- RPGenerate(p, d, projmethod)
-            kcv.voteRP <- sapply(k, function(x) {mean(knn(XTrain%*%RP, XVal%*%RP, YTrain, x) != YVal, na.rm = TRUE)})
-            weight.test <- min(kcv.voteRP)
-            if (weight.test <= w) {
-                w <- weight.test
-                RP1 <- RP
-                k1 <- order(kcv.voteRP)[1]
-            }
-        }
-        Val.Class <- as.numeric(knn(XTrain%*%RP1, XVal%*%RP1, YTrain, k1))
-        Test.Class <- as.numeric(knn(XTrain%*%RP1, XTest%*%RP1, YTrain, k1))
+    if (base == "QDA") 
+    {      
+        weight.test <- sapply(1:B2, function(j){mean(predict(qda(x =  XRP[, d*(j-1) + 1:d], grouping = YTrain),  XRPVal[,d*(j-1) + 1:d])$class != YVal, na.rm = TRUE)})
+        cols1 <-  d*(which.min(weight.test) - 1) + 1:d
+        Val.Class <- as.numeric(predict(qda(x = XRP[, cols1], grouping = YTrain), XRPVal[, cols1])$class)
+        XRPTest <- crossprod(t(XTest),RP[,cols1])
+        Test.Class <- as.numeric(predict(qda(x = XRP[, cols1], grouping = YTrain), XRPTest)$class)
     }
     if (base == "Other") {
-        for (j in 1:B2) {
-            RP <- RPGenerate(p, d, projmethod)
-            weight.test <- mean(Other.classifier(x = XTrain%*%RP, grouping = YTrain, XVal%*%RP)$class != YVal, na.rm = TRUE)
-            if (weight.test <= w) {
-                w <- weight.test
-                RP1 <- RP
-            }
-        }
-        Val.Class <- as.numeric(Other.classifier(x = XTrain%*%RP1, grouping = YTrain, XVal%*%RP1)$class)
-        Test.Class <- as.numeric(Other.classifier(x = XTrain%*%RP1, grouping = YTrain, XTest%*%RP1)$class)
+      weight.test <- sapply(1:B2, function(j){mean(Other.classifier(x = XRP[, d*(j-1) + 1:d], grouping = YTrain, CV = TRUE)$class != YTrain, na.rm = TRUE)})
+      cols1 <- d*(which.min(weight.test) - 1) + 1:d
+      Val.Class <- as.numeric(Other.classifier(x = XRP[, cols1], grouping = YTrain, XRPVal[, cols1])$class)
+      XRPTest <- crossprod(t(XTest),RP[,cols1])
+      Test.Class <- as.numeric(Other.classifier(x = XRP[, cols1], grouping = YTrain, XRPVal[, cols1])$class)
     }
     return(c(Val.Class, Test.Class)) 
 }

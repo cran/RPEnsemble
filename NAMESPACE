@@ -1,7 +1,11 @@
-export(RPalpha,RPChoose, RPChooseSS,RPEnsembleClass,RPGenerate,RPModel,RPParallel, Other.classifier)
+export(RPalpha, RPChoose, RPChooseSS, RPEnsembleClass, RPGenerate, RPModel, RPParallel, Other.classifier)
 import(MASS)
+import(distr)
+import(parallel)
 importFrom(class, knn, knn.cv)
 importFrom(stats, rmultinom)
-importFrom(parallel,mclapply)
+importFrom(stats, ecdf, optimise, predict, rchisq, rnorm)
+importFrom(utils, data)
+
 
 
