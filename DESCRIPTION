@@ -1,18 +1,15 @@
 Package: RPEnsemble
-Type: Package
+Version: 0.4
+Date: 2017-10-06
 Title: Random Projection Ensemble Classification
-Version: 0.3
-Date: 2016-09-01
 Author: Timothy I. Cannings and Richard J. Samworth
-Maintainer: Timothy I. Cannings <t.cannings@statslab.cam.ac.uk>
-Description: Implements the methodology of "Cannings, T. I. and Samworth, R. J. (2015) Random projection ensemble classification. http://arxiv.org/abs/1504.04595". The random projection ensemble classifier is a general method for classification of high-dimensional data, based on careful combination of the results of applying an arbitrary base classifier to random projections of the feature vectors into a lower-dimensional space. The random projections are divided into non-overlapping blocks, and within each block the projection yielding the smallest estimate of the test error is selected. The random projection ensemble classifier then aggregates the results of applying the base classifier on the selected projections, with a data-driven voting threshold to determine the final assignment. 
-Depends: R (>= 3.0.0), distr, MASS, parallel
+Maintainer: Timothy I. Cannings <cannings@marshall.usc.edu>
+Description: Implements the methodology of "Cannings, T. I. and Samworth, R. J. (2017) Random-projection ensemble classification, J. Roy. Stat. Soc., Ser. B. (with discussion), 79, 959--1035". The random projection ensemble classifier is a general method for classification of high-dimensional data, based on careful combination of the results of applying an arbitrary base classifier to random projections of the feature vectors into a lower-dimensional space. The random projections are divided into non-overlapping blocks, and within each block the projection yielding the smallest estimate of the test error is selected. The random projection ensemble classifier then aggregates the results of applying the base classifier on the selected projections, with a data-driven voting threshold to determine the final assignment. 
+Depends: R (>= 3.4.2), MASS, parallel
 Imports: class, stats
 License: GPL-3
-LazyLoad: Yes
-URL: http://arxiv.org/abs/1504.04595,
-        http://www.statslab.cam.ac.uk/~tc325/
+URL: http://arxiv.org/abs/1504.04595, http://www-bcf.usc.edu/~cannings/
 NeedsCompilation: no
-Packaged: 2016-09-01 13:48:12 UTC; tc325
+Packaged: 2017-10-06 23:34:39 UTC; timcannings
 Repository: CRAN
-Date/Publication: 2016-09-01 21:06:03
+Date/Publication: 2017-10-07 14:28:08 UTC

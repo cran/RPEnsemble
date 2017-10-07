@@ -39,8 +39,7 @@ function(Model.No #Model number
       Y1 <- rmultinom(1,n,c(Pi,1-Pi))
       Y <- c(rep(1,Y1[1,1]),rep(2,Y1[2,1]))
       mu <- c(rep(1/sqrt(p),p/2),rep(0,p/2))
-      D <- DExp(1)
-      X1 <- cbind(matrix(r(D)(Y1[1,1]*p),Y1[1,1],p))
+      X1 <- cbind(matrix(sample(c(-1,1),Y1[1,1]*p, replace = TRUE)*rexp(Y1[1,1]*p,1),Y1[1,1],p))
       X2 <- mvrnorm(Y1[2,1],mu,diag(p))
       X  <- rbind(X1,X2)
     }
