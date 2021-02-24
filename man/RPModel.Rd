@@ -1,7 +1,7 @@
 \name{RPModel}
 \alias{RPModel}
 \title{Generate pairs \code{(x,y)} from joint distribution}
-\description{Generates data from the models described in Cannings and Samworth (2016)}
+\description{Generates data from the models described in Cannings and Samworth (2017)}
 \usage{
 RPModel(Model.No, n, p, Pi = 1/2)
 }
@@ -15,8 +15,7 @@ RPModel(Model.No, n, p, Pi = 1/2)
 \item{x}{An \code{n} by \code{p} data matrix -- \code{n} observations of the \code{p}-dimensional features}
 \item{y}{A vector of length \code{n} containing the classes (either 1 or 2)}
 }
-\references{Cannings, T. I. and Samworth, R. J. (2016) Random projection ensemble classification. 
-\url{http://arxiv.org/abs/1504.04595}}
+\references{Cannings, T. I. and Samworth, R. J. (2017) Random-projection ensemble classification, J. Roy. Statist. Soc., Ser. B. (with discussion), 79, 959--1035}
 \author{Timothy I. Cannings and Richard J. Samworth}
 \note{Models 1 and 2 require \code{p = 100} or \code{1000}.}
 

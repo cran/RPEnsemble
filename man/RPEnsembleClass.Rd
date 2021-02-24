@@ -15,8 +15,7 @@
 }
 \details{An observation in the test set is assigned to class 1 if \code{B1*alpha} or more of the base classifications are class 1 (otherwise class 2).}
 \value{A vector of length \code{n.test} containing the class predictions of the test set (either 1 or 2).}
-\references{Cannings, T. I. and Samworth, R. J. (2015) Random projection ensemble classification. 
-\url{http://arxiv.org/abs/1504.04595}}
+\references{Cannings, T. I. and Samworth, R. J. (2017) Random-projection ensemble classification, J. Roy. Statist. Soc., Ser. B. (with discussion), 79, 959--1035}
 \author{Timothy I. Cannings and Richard J. Samworth}
 
 \seealso{\code{\link{RPParallel}}, \code{\link{RPalpha}}, \code{\link{RPChoose}}}

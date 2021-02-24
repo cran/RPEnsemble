@@ -10,8 +10,7 @@
   \item{B2}{the number of projections}
   }
 \value{returns \code{B2} \code{p} by \code{d} random matrices as a single \code{p} by \code{d*B2} matrix}
-\references{Cannings, T. I. and Samworth, R. J. (2015) Random projection ensemble classification. 
-\url{http://arxiv.org/abs/1504.04595}}
+\references{Cannings, T. I. and Samworth, R. J. (2017) Random-projection ensemble classification, J. Roy. Statist. Soc., Ser. B. (with discussion), 79, 959--1035}
 \author{Timothy I. Cannings and Richard J. Samworth}
 
 

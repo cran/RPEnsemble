@@ -3,19 +3,18 @@
 \alias{RPEnsemble}
 \docType{package}
 \title{Random Projection Ensemble Classification}
-\description{Implements the methodology of Cannings and Samworth (2015).  The random projection ensemble classifier is a very general method for classification of high-dimensional data, based on careful combination of the results of applying an arbitrary base classifier to random projections of the feature vectors into a lower-dimensional space. The random projections are divided into non-overlapping blocks, and within each block the projection yielding the smallest estimate of the test error is selected.  The random projection ensemble classifier then aggregates the results of applying the base classifier on the selected projections, with a data-driven voting threshold to determine the final assignment.}
-\details{\code{\link{RPChoose}} chooses the projection from a block of size \code{B2} that minimises an estimate of the test error (see Cannings and Samworth, 2015, Section 3), and classifies the training and test sets using the base classifier on the projected data.  \code{\link{RPParallel}} makes many calls to \code{\link{RPChoose}} in parallel.  \code{\link{RPalpha}} chooses the best empirical value of alpha (see Cannings and Samworth, 2015, Section 5.1).  \code{\link{RPEnsembleClass}} combines the results of many base classifications to classify the test set.
+\description{Implements the methodology of Cannings and Samworth (2017).  The random projection ensemble classifier is a very general method for classification of high-dimensional data, based on careful combination of the results of applying an arbitrary base classifier to random projections of the feature vectors into a lower-dimensional space. The random projections are divided into non-overlapping blocks, and within each block the projection yielding the smallest estimate of the test error is selected.  The random projection ensemble classifier then aggregates the results of applying the base classifier on the selected projections, with a data-driven voting threshold to determine the final assignment.}
+\details{\code{\link{RPChoose}} chooses the projection from a block of size \code{B2} that minimises an estimate of the test error (see Cannings and Samworth, 2017, Section 3), and classifies the training and test sets using the base classifier on the projected data.  \code{\link{RPParallel}} makes many calls to \code{\link{RPChoose}} in parallel.  \code{\link{RPalpha}} chooses the best empirical value of alpha (see Cannings and Samworth, 2017, Section 5.1).  \code{\link{RPEnsembleClass}} combines the results of many base classifications to classify the test set.
 
-The method can be used with any base classifier, any test error estimate and any distribution of the random projections.  This package provides code for the following options: Classifiers -- linear discriminant analysis, quadratic discriminant analysis and the k-nearest neighbour classifier.  Error estimates -- resubstitution and leave-one-out, we also provide code for the sample-splitting method described in Cannings and Samworth (2015, Section 7) (this can be done by setting \code{estmethod = samplesplit}).  Projection distribution -- Haar, Gaussian or axis-aligned projections. 
+The method can be used with any base classifier, any test error estimate and any distribution of the random projections.  This package provides code for the following options: Classifiers -- linear discriminant analysis, quadratic discriminant analysis and the k-nearest neighbour classifier.  Error estimates -- resubstitution and leave-one-out, we also provide code for the sample-splitting method described in Cannings and Samworth (2017, Section 7) (this can be done by setting \code{estmethod = samplesplit}).  Projection distribution -- Haar, Gaussian or axis-aligned projections. 
 
 The package provides the option to add your own base classifier and estimation method, this can be done by editing the code in the function \code{\link{Other.classifier}}.  Moreover, one could edit the \code{\link{RPGenerate}} function to generate projections from different distributions.}
 
 \author{Timothy I. Cannings and Richard J. Samworth
 
-Maintainer: Timothy I. Cannings <t.cannings@statslab.cam.ac.uk>
+Maintainer: Timothy I. Cannings <timothy.cannings@ed.ac.uk>
 }
-\references{Cannings, T. I. and Samworth, R. J. (2015) Random projection ensemble classification. \url{http://arxiv.org/abs/1504.04595}}
-
+\references{Cannings, T. I. and Samworth, R. J. (2017) Random-projection ensemble classification, J. Roy. Statist. Soc., Ser. B. (with discussion), 79, 959--1035}
 \examples{
 #generate data from Model 1
 set.seed(101)

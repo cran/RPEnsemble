@@ -1,8 +1,7 @@
 \name{RPChoose}
 \alias{RPChoose}
 \title{Chooses projection}
-\description{Chooses a the best projection from a set of size \code{B2} based on a test
-  error estimate, then classifies the training and test sets using the chosen projection.}
+\description{Chooses a the best projection from a set of size \code{B2} based on a test error estimate, then classifies the training and test sets using the chosen projection.}
 \usage{
 RPChoose(XTrain, YTrain, XTest, d, B2 = 10, base = "LDA", k = c(3,5), 
 projmethod = "Haar", estmethod = "training", ...)
@@ -21,7 +20,7 @@ projmethod = "Haar", estmethod = "training", ...)
 }
 \details{Randomly projects the the data \code{B2} times. Chooses the projection yielding the smallest estimate of the test error. Classifies the training set (via the same method as \code{estmethod}) and test set using the chosen projection.}
 \value{Returns a vector of length \code{n + n.test}: the first \code{n} entries are the estimated classes of the training set, the last \code{n.test} are the estimated classes of the test set.} 
-\references{Cannings, T. I. and Samworth, R. J. (2015) Random projection ensemble classification. \url{http://arxiv.org/abs/1504.04595}}
+\references{Cannings, T. I. and Samworth, R. J. (2017) Random-projection ensemble classification, J. Roy. Statist. Soc., Ser. B. (with discussion), 79, 959--1035}
 \author{Timothy I. Cannings and Richard J. Samworth}
 \note{Resubstitution method unsuitable for the \code{k}-nearest neighbour classifier.}
 

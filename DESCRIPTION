@@ -1,15 +1,16 @@
 Package: RPEnsemble
-Version: 0.4
-Date: 2017-10-06
+Version: 0.5
+Date: 2021-02-23
 Title: Random Projection Ensemble Classification
 Author: Timothy I. Cannings and Richard J. Samworth
-Maintainer: Timothy I. Cannings <cannings@marshall.usc.edu>
-Description: Implements the methodology of "Cannings, T. I. and Samworth, R. J. (2017) Random-projection ensemble classification, J. Roy. Stat. Soc., Ser. B. (with discussion), 79, 959--1035". The random projection ensemble classifier is a general method for classification of high-dimensional data, based on careful combination of the results of applying an arbitrary base classifier to random projections of the feature vectors into a lower-dimensional space. The random projections are divided into non-overlapping blocks, and within each block the projection yielding the smallest estimate of the test error is selected. The random projection ensemble classifier then aggregates the results of applying the base classifier on the selected projections, with a data-driven voting threshold to determine the final assignment. 
-Depends: R (>= 3.4.2), MASS, parallel
+Maintainer: Timothy I. Cannings <timothy.cannings@ed.ac.uk>
+Description: Implements the methodology of "Cannings, T. I. and Samworth, R. J. (2017) Random-projection ensemble classification, J. Roy. Statist. Soc., Ser. B. (with discussion), 79, 959--1035". The random projection ensemble classifier is a general method for classification of high-dimensional data, based on careful combination of the results of applying an arbitrary base classifier to random projections of the feature vectors into a lower-dimensional space. The random projections are divided into non-overlapping blocks, and within each block the projection yielding the smallest estimate of the test error is selected. The random projection ensemble classifier then aggregates the results of applying the base classifier on the selected projections, with a data-driven voting threshold to determine the final assignment. 
+Depends: R (>= 3.4.0), MASS, parallel
 Imports: class, stats
 License: GPL-3
-URL: http://arxiv.org/abs/1504.04595, http://www-bcf.usc.edu/~cannings/
+URL: https://arxiv.org/abs/1504.04595,
+        https://www.maths.ed.ac.uk/~tcannings/
 NeedsCompilation: no
-Packaged: 2017-10-06 23:34:39 UTC; timcannings
+Packaged: 2021-02-24 12:36:23 UTC; tc
 Repository: CRAN
-Date/Publication: 2017-10-07 14:28:08 UTC
+Date/Publication: 2021-02-24 13:40:08 UTC

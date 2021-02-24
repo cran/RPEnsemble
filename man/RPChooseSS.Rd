@@ -2,8 +2,7 @@
 \alias{RPChooseSS}
 \title{A sample splitting version of \code{\link{RPChoose}}}
 \description{Chooses the best projection based on an estimate of the
-  test error of the classifier with training data \code{(XTrain, YTrain)}, the
-  estimation method counts the number of errors made on the validation set \code{(XVal, YVal)}.}
+  test error of the classifier with training data \code{(XTrain, YTrain)}, the estimation method counts the number of errors made on the validation set \code{(XVal, YVal)}.}
 \usage{
 RPChooseSS(XTrain, YTrain, XVal, YVal, XTest, d, B2 = 100, base = "LDA",  
 k = c(3, 5), projmethod = "Haar", ...)
@@ -23,8 +22,7 @@ k = c(3, 5), projmethod = "Haar", ...)
 }
 \details{Maps the the data using \code{B2} random projections. For each projection the validation set is classified using the the training set and the projection yielding the smallest number of errors over the validation set is retained. The validation set and test set are then classified using the chosen projection.}  
 \value{Returns a vector of length \code{n.val + n.test}: the first \code{n.val} entries are the estimated classes of the validation set, the last \code{n.test} are the estimated classes of the test set.} 
-\references{Cannings, T. I. and Samworth, R. J. (2015) Random projection ensemble classification. 
-\url{http://arxiv.org/abs/1504.04595}}
+\references{Cannings, T. I. and Samworth, R. J. (2017) Random-projection ensemble classification, J. Roy. Statist. Soc., Ser. B. (with discussion), 79, 959--1035}
 \author{Timothy I. Cannings and Richard J. Samworth}
 
 \seealso{\code{\link{RPParallel}}, \code{\link{RPChoose}}, \code{lda}, \code{qda}, \code{knn}}

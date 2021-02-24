@@ -28,8 +28,7 @@ clustertype = "Default", cores = 1, machines = NULL, seed = 1, ... )
 }
 \details{Makes \code{B1} calls to \code{\link{RPChoose}} or \code{\link{RPChooseSS}} in parallel.}
 \value{If \code{estmethod == "training"} or \code{"loo"} , then returns an \code{n+n.test} by \code{B1} matrix, each row containing the result of a call to \code{\link{RPChoose}}. If \code{estmethod == "samplesplit"}, then returns an \code{n.val+n.test} by \code{B1} matrix, each row containing the result of a call to \code{\link{RPChooseSS}}.}
-\references{Cannings, T. I. and Samworth, R. J. (2015) Random projection ensemble classification.
-\url{http://arxiv.org/abs/1504.04595}}
+\references{Cannings, T. I. and Samworth, R. J. (2017) Random-projection ensemble classification, J. Roy. Statist. Soc., Ser. B. (with discussion), 79, 959--1035}
 \author{Timothy I. Cannings and Richard J. Samworth}
 
 \seealso{\code{\link{RPChoose}}, \code{\link{RPChooseSS}}}
